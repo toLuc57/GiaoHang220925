@@ -28,6 +28,8 @@
         <input type="text" id="mass" name="mass" 
         placeholder="Mass" value="">
         <input type="submit" value="Search">
+        
+        <!-- doPost() -->
         <table>
           <tr>
             <c:forEach items="${title}" var="i">
