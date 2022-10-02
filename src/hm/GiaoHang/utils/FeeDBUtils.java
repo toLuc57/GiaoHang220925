@@ -11,12 +11,12 @@ import hm.GiaoHang.entity.Fee;
 import hm.GiaoHang.jdbc.MySQLConnUtils;
 
 public class FeeDBUtils {
-	private static final String table = "`fee`";
-	private static final String id = "`id`";
-	private static final String name = "`name`";
-	private static final String distance = "`distance`";
-	private static final String mass = "`mass`";
-	private static final String price = "`price`";
+	private static final String table = "fee";
+	private static final String id = "id";
+	private static final String name = "name";
+	private static final String distance = "distance";
+	private static final String mass = "mass";
+	private static final String price = "price";
 	
 	public static List<String> title(){
 		List<String> list = new ArrayList<String>();
@@ -34,11 +34,12 @@ public class FeeDBUtils {
 		List<Fee> list = new ArrayList<Fee>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + id + ", " + name + ", " + distance
-					+ ", " + mass + ", " + price
-					+ " from " + table ;
+			String sql = "select `" + id + "`, `" + name + "`, `" + distance
+					+ "`, `" + mass + "`, `" + price
+					+ "` from `" + table + "`" ;
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery();
+			System.out.println(sql);
 			while(rs.next()) {
 				String findId = rs.getString(id);
 				String findName = rs.getString(name);
@@ -65,10 +66,10 @@ public class FeeDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + id + ", " + name + ", " + distance
-					+ ", " + mass + ", " + price
-					+ " from " + table 
-					+ " where " + id +" =?";
+			String sql = "select `" + id + "`, `" + name + "`, `" + distance
+					+ "`, `" + mass + "`, `" + price
+					+ "` from `" + table 
+					+ "` where `" + id +"` =?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, findId);
@@ -96,11 +97,11 @@ public class FeeDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "update " + table
-					+ " set " + name + " =?, "
-					+ distance + " =?, "
-					+ mass + "=?, " + price +"=? "
-					+ " where " + id +" =?";
+			String sql = "update `" + table
+					+ " set `" + name + "` =?, `"
+					+ distance + "` =?, `"
+					+ mass + "`=?, `" + price +"`=? "
+					+ " where `" + id +"` =?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, update.getFeename());
@@ -124,8 +125,8 @@ public class FeeDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "insert into " + table
-					+ " (" + name + " , " + distance
-					+ ", "	+ mass + ", " + price +") "
+					+ " (`" + name + "` , `" + distance
+					+ "`, `"	+ mass + "`, `" + price +"`) "
 					+ " value (?,?,?,?)";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -147,7 +148,7 @@ public class FeeDBUtils {
 	public static void delete(String deleteId) throws SQLException {
 		Connection conn = null;
 		try {
-			String sql = "Delete from "+ table + " where "+ id + "= ?";
+			String sql = "Delete from `" + table + "` where `"+ id + "`= ?";
 			conn = MySQLConnUtils.getMySQLConUtils();
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, deleteId);
@@ -158,5 +159,41 @@ public class FeeDBUtils {
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}	
+	}
+	
+	public static List<Fee> findRecords(double distance1, double mass1)
+			throws SQLException{
+		Connection conn = null;
+		List<Fee> list = new ArrayList<Fee>();
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "select `" + id + "`, `" + name + "`, `" + distance
+					+ "`, `" + mass + "`, `" + price
+					+ " from `" + table 
+					+ "` where `" + distance + "`> ?"
+					+ " and `" + mass + "` > ?";
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setDouble(1, distance1);
+			pstm.setDouble(2, mass1);
+			ResultSet rs = pstm.executeQuery();
+			while(rs.next()) {
+				String findId = rs.getString(id);
+				String findName = rs.getString(name);
+				double findDistance = rs.getDouble(distance);
+				int findMass = rs.getInt(mass);
+				double findPrice = rs.getDouble(price);
+				Fee f = new Fee(findId,findName,findDistance,
+						findMass,findPrice);
+				list.add(f);
+			} 
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+		return list;
 	}
 }

@@ -11,13 +11,13 @@ import hm.GiaoHang.entity.Receipt;
 import hm.GiaoHang.jdbc.MySQLConnUtils;
 
 public class ReceiptDBUtils {
-	private static final String table = "`receipt`";
-	private static final String id = "`id`";
-	private static final String idCustomer = "`idCustomer`";
-	private static final String idShip = "`idShip`";
-	private static final String date = "`date`";
-	private static final String distance = "`distance`";
-	private static final String status = "`status`";
+	private static final String table = "receipt";
+	private static final String id = "id";
+	private static final String idCustomer = "idCustomer";
+	private static final String idShip = "idShip";
+	private static final String date = "date";
+	private static final String distance = "distance";
+	private static final String status = "status";
 	
 	public static List<String> title(){
 		List<String> list = new ArrayList<String>();
@@ -36,9 +36,9 @@ public class ReceiptDBUtils {
 		List<Receipt> list = new ArrayList<Receipt>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + id + ", " + idCustomer + ", " + idShip
-					+ ", " + date + ", " + distance + ", " + status
-					+ " from " + table;
+			String sql = "select `" + id + "`, `" + idCustomer + "`, `" + idShip
+					+ "`, `" + date + "`, `" + distance + "`, `" + status
+					+ "` from `" + table +"`";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery();
 			while(rs.next()) {
@@ -69,10 +69,10 @@ public class ReceiptDBUtils {
 		List<Receipt> list = new ArrayList<Receipt>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + id + ", " + idShip
-					+ ", " + date + ", " + distance + ", " + status
-					+ " from " + table
-					+ " where " + idCustomer + " = ?";
+			String sql = "select `" + id + "`, `" + idShip
+					+ "`, `" + date + "`, `" + distance + "`, `" + status
+					+ "` from `" + table
+					+ "` where `" + idCustomer + "` = ?";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, findIdCustomer);
 			ResultSet rs = pstm.executeQuery();
@@ -102,10 +102,10 @@ public class ReceiptDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + idCustomer + ", " + idShip
-					+ ", " + date + ", " + distance + ", " + status
-					+ " from " + table
-					+ " where " + id + " = ?";
+			String sql = "select `" + idCustomer + "`, `" + idShip
+					+ "`, `" + date + "`, `" + distance + "`, `" + status
+					+ "` from `" + table
+					+ "` where `" + id + "` = ?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, findId);
@@ -134,11 +134,11 @@ public class ReceiptDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "update " + table
-					+ " set " + idCustomer + " =?, "
-					+ idShip + " =?, " + date + " =?, "
-					+ distance + "=?, " + status +"=? "
-					+ " where " + id +" =?";
+			String sql = "update `" + table
+					+ "` set `" + idCustomer + "` =?, `"
+					+ idShip + "` =?, `" + date + "` =?, `"
+					+ distance + "`=?, `" + status +"`=? "
+					+ " where `" + id +"` =?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, update.getIdCustomer());
@@ -163,9 +163,9 @@ public class ReceiptDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "insert into " + table
-					+ " (" + idCustomer + " , " + idShip 
-					+ ", "	+ date + ", " + distance 
-					+ ", "	+ status  +") "
+					+ " (`" + idCustomer + "`, `" + idShip 
+					+ "`, `"	+ date + "`, `" + distance 
+					+ "`,` "	+ status  +"`) "
 					+ " value (?,?,?,?,?)";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -188,7 +188,7 @@ public class ReceiptDBUtils {
 	public static void delete(String deleteId) throws SQLException {
 		Connection conn = null;
 		try {
-			String sql = "Delete from "+ table + " where "+ id + "= ?";
+			String sql = "Delete from `" + table + "` where `"+ id + "`= ?";
 			conn = MySQLConnUtils.getMySQLConUtils();
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, deleteId);

@@ -14,12 +14,12 @@ import hm.GiaoHang.entity.Receipt;
 import hm.GiaoHang.jdbc.MySQLConnUtils;
 
 public class InvoiceDetailsDBUtils {
-	private static final String table = "`invoice_details`";
-	private static final String receiptId = "`receipt_id`";
-	private static final String goodsId = "`goods_id`";
-	private static final String goodsName = "`goods_name`";
-	private static final String amount = "`amount`";
-	private static final String price = "`price`";
+	private static final String table = "invoice_details";
+	private static final String receiptId = "receipt_id";
+	private static final String goodsId = "goods_id";
+	private static final String goodsName = "goods_name";
+	private static final String amount = "amount";
+	private static final String price = "price";
 	
 	public static List<String> title(){
 		List<String> list = new ArrayList<String>();
@@ -38,9 +38,9 @@ public class InvoiceDetailsDBUtils {
 		List<InvoiceDetails> list = new ArrayList<InvoiceDetails>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + receiptId + ", " + goodsId 
-					+ ", " + goodsName	+ ", " + amount + ", " + price 
-					+ " from " + table;
+			String sql = "select `" + receiptId + "`, `" + goodsId 
+					+ "`, `" + goodsName	+ "`, `" + amount + "`, `" + price 
+					+ "` from `" + table + "`";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery();
 			while(rs.next()) {
@@ -70,10 +70,10 @@ public class InvoiceDetailsDBUtils {
 		List<InvoiceDetails> list = new ArrayList<InvoiceDetails>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select "  + goodsId + ", " + goodsName	
-					+ ", " + amount + ", " + price 
-					+ " from " + table
-					+ " where " + receiptId + " = ?";
+			String sql = "select `"  + goodsId + "`, `" + goodsName	
+					+ "`, `" + amount + "`, `" + price 
+					+ "` from `" + table
+					+ "` where `" + receiptId + "` = ?";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, findId);
 			ResultSet rs = pstm.executeQuery();
@@ -110,11 +110,11 @@ public class InvoiceDetailsDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "update " + table
-					+ " set " + goodsName + " =?, "
-					+ amount + " =?, " + price + " =? "
-					+ " where " + receiptId +" =?"
-					+ " and " + goodsId + " =?";
+			String sql = "update `" + table
+					+ "` set `" + goodsName + "` =?, `"
+					+ amount + "` =?, `" + price + "` =? "
+					+ " where `" + receiptId +"` =?"
+					+ " and `" + goodsId + "` =?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, update.getGoodsName());
@@ -138,9 +138,9 @@ public class InvoiceDetailsDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "insert into " + table
-					+ " (" + receiptId + " , " + goodsId 
-					+ ", "	+ goodsName + ", " + amount 
-					+ ", "	+ price  +") "
+					+ " (`" + receiptId + "` , `" + goodsId 
+					+ "`, `"	+ goodsName + "`, `" + amount 
+					+ "`, `"	+ price  +"`) "
 					+ " value (?,?,?,?,?)";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -164,9 +164,9 @@ public class InvoiceDetailsDBUtils {
 			throws SQLException {
 		Connection conn = null;
 		try {
-			String sql = "Delete from "+ table 
-					+ " where " + receiptId + "= ?"
-					+ " and " + goodsId + "=?";
+			String sql = "Delete from `"+ table 
+					+ "` where `" + receiptId + "`= ?"
+					+ " and `" + goodsId + "`=?";
 			conn = MySQLConnUtils.getMySQLConUtils();
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, deleteReceiptId);

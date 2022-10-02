@@ -11,9 +11,9 @@ import hm.GiaoHang.entity.Goods;
 import hm.GiaoHang.jdbc.MySQLConnUtils;
 
 public class GoodsDBUtils {
-	private static final String table = "`goods`";
-	private static final String id = "`id`";
-	private static final String name = "`name`";
+	private static final String table = "goods";
+	private static final String id = "id";
+	private static final String name = "name";
 	
 	public static List<String> title(){
 		List<String> list = new ArrayList<String>();
@@ -28,8 +28,8 @@ public class GoodsDBUtils {
 		List<Goods> list = new ArrayList<Goods>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + id + ", " + name 
-					+ " from " + table ;
+			String sql = "select `" + id + "`, `" + name 
+					+ "` from `" + table + "`";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery();
 			while(rs.next()) {
@@ -54,9 +54,9 @@ public class GoodsDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + id + ", " + name 
-					+ " from " + table 
-					+ " where " + id +" =?";
+			String sql = "select `" + id + "`, `" + name 
+					+ "` from `" + table 
+					+ "` where `" + id +"` =?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, findId);
@@ -80,9 +80,9 @@ public class GoodsDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "update " + table
-					+ " set " + name + " =? "
-					+ " where " + id +" =?";
+			String sql = "update `" + table
+					+ "` set `" + name + "` =? "
+					+ " where `" + id +"` =?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, update.getName());
@@ -103,7 +103,7 @@ public class GoodsDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "insert into " + table
-					+ " (" + name + ") "
+					+ " (`" + name + "`) "
 					+ " value (?)";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -122,7 +122,7 @@ public class GoodsDBUtils {
 	public static void delete(String deleteId) throws SQLException {
 		Connection conn = null;
 		try {
-			String sql = "Delete from "+ table + " where "+ id + "= ?";
+			String sql = "Delete from `"+ table + "` where `"+ id + "`= ?";
 			conn = MySQLConnUtils.getMySQLConUtils();
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, deleteId);

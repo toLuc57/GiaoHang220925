@@ -10,12 +10,12 @@ import hm.GiaoHang.jdbc.MySQLConnUtils;
 
 
 public class UserAccountDBUtils {
-	private static final String table = "`useraccount`";
-	private static final String userName = "`username`";
-	private static final String password = "`password`";
-	private static final String idCustomer = "`idCustomer`";
-	private static final String idStaff = "`idStaff`";
-	private static final String status = "`status`";
+	private static final String table = "useraccount";
+	private static final String userName = "username";
+	private static final String password = "password";
+	private static final String idCustomer = "idCustomer";
+	private static final String idStaff = "idStaff";
+	private static final String status = "status";
 	private static final String noticeSuccessfull = "Login successful";
 	
 	private static boolean IsExists(String findUserName, String findPassword) 
@@ -23,10 +23,10 @@ public class UserAccountDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + userName + ", " + password  
-					+ ", " + idCustomer + ", " + idStaff  + ", " + status
-					+ " from " + table 
-					+ " where " + userName +" =? and " + password + "=?" ;
+			String sql = "select `" + userName + "`, `" + password  
+					+ "`, `" + idCustomer + "`, `" + idStaff  + "`, `" + status
+					+ "` from `" + table 
+					+ "` where `" + userName +"` =? and `" + password + "`=?" ;
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, findUserName);
 			pstm.setString(2, findPassword);
@@ -40,7 +40,7 @@ public class UserAccountDBUtils {
 				UserAccount userAccount = new UserAccount(findUsername, 
 						findpassword,findIdCustomer, findIdStaff, findStatus);
 				MyUtils.setTemporarySave(userAccount);
-				return true;	
+				return true;
 			}
 						
 		}
@@ -59,10 +59,10 @@ public class UserAccountDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + password  
-					+ ", " + idCustomer + ", " + idStaff 
-					+ " from " + table 
-					+ " where " + userName +" =?";
+			String sql = "select `" + password  
+					+ "`, `" + idCustomer + "`, `" + idStaff 
+					+ "` from `" + table 
+					+ "` where `" + userName +"` =?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, findUserName);
