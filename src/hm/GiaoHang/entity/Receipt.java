@@ -5,16 +5,16 @@ public class Receipt {
 	private String idCustomer;
 	private String idShip;
 	private String date;
-	private double distance;
+	private String origin;
+	private String destination;
 	private int status;
 	
 	public Receipt(String id, String idCustomer, String idShip,
-			String date, double distance, int status) {
+			String date,String origin, String destination, int status) {
 		this.id = id;
 		this.idCustomer = idCustomer;
 		this.idShip = idShip;
 		this.date = date;
-		this.distance = distance;
 		this.status = status;
 	}
 	public String getId() {
@@ -41,11 +41,17 @@ public class Receipt {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public double getDistance() {
-		return distance;
+	public String getOrigin() {
+		return origin;
 	}
-	public void setDistance(double distance) {
-		this.distance = distance;
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+	public String getDestination() {
+		return destination;
+	}
+	public void setDestination(String destination) {
+		this.destination = destination;
 	}
 	public int getStatus() {
 		return status;

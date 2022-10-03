@@ -8,6 +8,7 @@
 <title>Receipt page!</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/mystyle.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/table.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/form.css">
 </head>
 <body>
 <jsp:include page="_header.jsp"></jsp:include>
@@ -16,36 +17,37 @@
 <div class="row">
     <div class="card">
       <h3>Login</h3>
-      <form action="login" method="post">
+      <form action="transport" method="post">
       	<p style="color:red" >${errorString}</p>
         <label for="from">From </label>
         <input type="text" id="from" name="from" 
-        placeholder="From" value="">
+        placeholder="From" value="${from}">
         <label for="to">To</label>
         <input type="text" id="to" name="to" 
-        placeholder="To" value="">
-        <label for="mass">Mass</label>
-        <input type="text" id="mass" name="mass" 
-        placeholder="Mass" value="">
+        placeholder="To" value="${to}">
+        <label for="mass">Mass (gram)</label>
+        <input type="number" id="mass" name="mass" 
+        placeholder="Mass" value="${mass}" step="250">
         <input type="submit" value="Search">
-        
         <!-- doPost() -->
-        <table>
-          <tr>
-            <c:forEach items="${title}" var="i">
-   	          <th>${i}</th>
-            </c:forEach>
-          </tr>
-          <c:forEach items="${feeList}" var="i">
+        <div>
+          <table>
             <tr>
-              <td>${i.feeid}</td>
-              <td>${i.feename}</td>
-              <td>${i.distance}</td>
-              <td>${i.mass}</td>
-              <td>${i.feeprice}</td>
+              <c:forEach items="${title}" var="i">
+   	            <th>${i}</th>
+              </c:forEach>
             </tr>
-          </c:forEach>
-        </table>
+            <c:forEach items="${feeList}" var="i">
+              <tr>
+                <td>${i.feeid}</td>
+                <td>${i.feename}</td>
+                <td>${i.distance}</td>
+                <td>${i.mass}</td>
+                <td>${i.feeprice}</td>
+              </tr>
+            </c:forEach>
+          </table>
+        </div>
       </form>
     </div>
 </div>

@@ -15,6 +15,14 @@
     </li>
   </c:if>
   <c:if test="${not empty loginedUser}">
+    <li class="dropdown">
+      <a href="receipt">Receipt</a>
+    </li>
+    <li class="dropdown">
+      <a href="transport">Transport</a>
+    </li>
+  </c:if>
+  <c:if test="${not empty loginedUser}">
     <li class="dropdown right">
       <a href="javascript:void(0)" class="dropbtn">Account</a>
       <div class="dropdown-content">

@@ -24,11 +24,12 @@
           </tr>
           <c:forEach items="${receiptList}" var="i">
             <tr>
-              <td>${i.receiptid}</td>
-              <td>${i.receiptname}</td>
+              <td>${i.id}</td>
+              <td>${i.idCustomer}</td>
+              <td>${i.idShip}</td>
+              <td>${i.date}</td>
               <td>${i.distance}</td>
-              <td>${i.mass}</td>
-              <td>${i.receiptprice}</td>
+              <td>${i.status}</td>
             </tr>
             <c:forEach items="${invoiceDetails}" var="j">
               <tr>

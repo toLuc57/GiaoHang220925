@@ -39,7 +39,6 @@ public class FeeDBUtils {
 					+ "` from `" + table + "`" ;
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery();
-			System.out.println(sql);
 			while(rs.next()) {
 				String findId = rs.getString(id);
 				String findName = rs.getString(name);
@@ -167,11 +166,14 @@ public class FeeDBUtils {
 		List<Fee> list = new ArrayList<Fee>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select `" + id + "`, `" + name + "`, `" + distance
-					+ "`, `" + mass + "`, `" + price
-					+ " from `" + table 
-					+ "` where `" + distance + "`> ?"
-					+ " and `" + mass + "` > ?";
+			String sql = "select `"+ id +"`, `"	+ name 
+					+ "`, min(`" + distance + "`)" 	+ " as '" + distance 
+					+"', min(`"+ mass + "`)" + " as '" + mass 
+					+ "', `" + price + "` FROM `" + table 
+					+ "` where `" + distance + "` >= ?"
+					+ " and `"+ mass + "` >= ?" 
+					+ "GROUP BY `" + id+ "`,`" + name + "`,`" + price+ "`";
+			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setDouble(1, distance1);
 			pstm.setDouble(2, mass1);

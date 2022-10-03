@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import hm.GiaoHang.entity.Receipt;
+import hm.GiaoHang.utils.MyUtils;
 import hm.GiaoHang.utils.ReceiptDBUtils;
 
 @WebServlet("/receipt")
@@ -26,10 +27,10 @@ public class ReceiptServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<String> title = ReceiptDBUtils.title() ;
 		List<Receipt> list = null;
+		String id = MyUtils.getLoginedUser(request.getSession()).getIdCustomer();
 		try {
-			list = ReceiptDBUtils.query();
+			list = ReceiptDBUtils.query(id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		request.setAttribute("title", title);

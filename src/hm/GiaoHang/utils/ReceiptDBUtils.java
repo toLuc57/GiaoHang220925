@@ -16,7 +16,8 @@ public class ReceiptDBUtils {
 	private static final String idCustomer = "idCustomer";
 	private static final String idShip = "idShip";
 	private static final String date = "date";
-	private static final String distance = "distance";
+	private static final String origin = "origin";
+	private static final String destination = "destination";
 	private static final String status = "status";
 	
 	public static List<String> title(){
@@ -25,7 +26,8 @@ public class ReceiptDBUtils {
 		list.add("Customer Id");
 		list.add("Ship Id");
 		list.add("Date");
-		list.add("Distance");
+		list.add("Origin");
+		list.add("Destination");
 		list.add("Status");
 		return list;
 	}
@@ -36,8 +38,9 @@ public class ReceiptDBUtils {
 		List<Receipt> list = new ArrayList<Receipt>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select `" + id + "`, `" + idCustomer + "`, `" + idShip
-					+ "`, `" + date + "`, `" + distance + "`, `" + status
+			String sql = "select `" + id + "`, `" + idCustomer 
+					+ "`, `" + idShip + "`, `" + date + "`, `" + origin 
+					+ "`, `" + destination + "`, `" + status
 					+ "` from `" + table +"`";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery();
@@ -46,10 +49,11 @@ public class ReceiptDBUtils {
 				String findIdCustomer = rs.getString(idCustomer);
 				String findIdShip = rs.getString(idShip);
 				String findDate = rs.getString(date);
-				double findDistance = rs.getDouble(distance);
+				String findOrigin = rs.getString(origin);
+				String findDestination = rs.getString(destination);
 				int findStatus = rs.getInt(status);
 				Receipt f = new Receipt(findId,findIdCustomer,findIdShip,
-						findDate,findDistance,findStatus);
+						findDate,findOrigin,findDestination,findStatus);
 				list.add(f);
 			} 
 		}
@@ -65,14 +69,18 @@ public class ReceiptDBUtils {
 	
 	public static List<Receipt> query(String findIdCustomer) 
 			throws SQLException {
+		if(findIdCustomer == null || findIdCustomer.length() == 0) {
+			return query();
+		}
 		Connection conn = null;
 		List<Receipt> list = new ArrayList<Receipt>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select `" + id + "`, `" + idShip
-					+ "`, `" + date + "`, `" + distance + "`, `" + status
-					+ "` from `" + table
-					+ "` where `" + idCustomer + "` = ?";
+			String sql = "select `" + id + "`, `" + idShip 
+					+ "`, `" + date + "`, `" + origin 
+					+ "`, `" + destination + "`, `" + status
+					+ "` from `" + table 
+					+ "` where `" + idCustomer + "` =?";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, findIdCustomer);
 			ResultSet rs = pstm.executeQuery();
@@ -80,10 +88,11 @@ public class ReceiptDBUtils {
 				String findId = rs.getString(id);
 				String findIdShip = rs.getString(idShip);
 				String findDate = rs.getString(date);
-				double findDistance = rs.getDouble(distance);
+				String findOrigin = rs.getString(origin);
+				String findDestination = rs.getString(destination);
 				int findStatus = rs.getInt(status);
 				Receipt f = new Receipt(findId,findIdCustomer,findIdShip,
-						findDate,findDistance,findStatus);
+						findDate,findOrigin,findDestination,findStatus);
 				list.add(f);
 			} 
 		}
@@ -103,7 +112,8 @@ public class ReceiptDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select `" + idCustomer + "`, `" + idShip
-					+ "`, `" + date + "`, `" + distance + "`, `" + status
+					+ "`, `" + date + "`, `" + origin 
+					+ "`, `" + destination + "`, `" + status
 					+ "` from `" + table
 					+ "` where `" + id + "` = ?";
 			
@@ -114,10 +124,11 @@ public class ReceiptDBUtils {
 				String findIdCustomer = rs.getString(idCustomer);
 				String findIdShip = rs.getString(idShip);
 				String findDate = rs.getString(date);
-				double findDistance = rs.getDouble(distance);
+				String findOrigin = rs.getString(origin);
+				String findDestination = rs.getString(destination);
 				int findStatus = rs.getInt(status);
 				Receipt f = new Receipt(findId,findIdCustomer,findIdShip,
-						findDate,findDistance,findStatus);
+						findDate,findOrigin,findDestination,findStatus);
 				return f;
 			} 
 		}
@@ -137,16 +148,18 @@ public class ReceiptDBUtils {
 			String sql = "update `" + table
 					+ "` set `" + idCustomer + "` =?, `"
 					+ idShip + "` =?, `" + date + "` =?, `"
-					+ distance + "`=?, `" + status +"`=? "
+					+ origin + "`=?, `" + destination +"`=?, `"
+					+ status +"`=? "
 					+ " where `" + id +"` =?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, update.getIdCustomer());
 			pstm.setString(2, update.getIdShip());
-			pstm.setDouble(3, update.getDistance());
-			pstm.setString(4, update.getDate());
-			pstm.setInt(5, update.getStatus());
-			pstm.setString(6, update.getId());
+			pstm.setString(3, update.getDate());
+			pstm.setString(4, update.getOrigin());
+			pstm.setString(5, update.getDestination());
+			pstm.setInt(6, update.getStatus());
+			pstm.setString(7, update.getId());
 			pstm.executeUpdate();
 		}
 		catch (ClassNotFoundException | SQLException e) {
@@ -164,16 +177,17 @@ public class ReceiptDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "insert into " + table
 					+ " (`" + idCustomer + "`, `" + idShip 
-					+ "`, `"	+ date + "`, `" + distance 
-					+ "`,` "	+ status  +"`) "
+					+ "`, `" + date + "`, `" + origin 
+					+ "`,` "+ destination +  "`,` " + status  +"`) "
 					+ " value (?,?,?,?,?)";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, insert.getIdCustomer());
 			pstm.setString(2, insert.getIdShip());
 			pstm.setString(3, insert.getDate());
-			pstm.setDouble(4, insert.getDistance());
-			pstm.setInt(5, insert.getStatus());
+			pstm.setString(4, insert.getOrigin());
+			pstm.setString(5, insert.getDestination());
+			pstm.setInt(6, insert.getStatus());
 			pstm.executeUpdate();
 		}
 		catch (ClassNotFoundException | SQLException e) {
