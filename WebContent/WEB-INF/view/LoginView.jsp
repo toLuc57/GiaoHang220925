@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/form.css">
 </head>
 <body>
-<jsp:include page="_header.jsp"></jsp:include>
 <jsp:include page="_menu.jsp"></jsp:include>
 <div class="row">
   <div class="leftcolumn">
@@ -21,18 +20,25 @@
     <div class="card">
       <h3>Login</h3>
       <form action="login" method="post">
+      	<p style="color:red" >${errorString}</p>
         <label for="fname">Username</label>
-        <input type="text" id="username" name="username" placeholder="Your username..">
+        <input type="text" id="username" name="username" 
+        placeholder="Your username.." value="${user.username}">
 
         <label for="yourpassword">Password</label>
-        <input type="password" id="yourpassword" name="yourpassword" placeholder="Your password..">
-    
+        <input type="password" id="yourpassword" name="yourpassword" 
+        placeholder="Your password.." value="${user.password}">
+<!--     	
+    	<label class="container">Remember me
+          <input type="checkbox" id="rememberMe" name="rememberMe"
+    	    value="Y">
+          <span class="checkmark"></span>
+        </label> 
+-->
         <input type="submit" value="Login">
       </form>
     </div>
   </div>
 </div>
-  
-<jsp:include page="_footer.jsp"></jsp:include>
 </body>
 </html>

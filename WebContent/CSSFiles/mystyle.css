@@ -13,7 +13,7 @@ body {
 .header {
   padding: 30px;
   text-align: center;
-  background: white;
+  background-image: url("WebContent/images/background_header.png");
 }
 
 .header h1 {
