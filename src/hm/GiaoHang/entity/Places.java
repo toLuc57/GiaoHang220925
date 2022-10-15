@@ -1,44 +1,56 @@
 package hm.GiaoHang.entity;
 
 public class Places {
-	private String id;
-	private String name;
-	private double x;
-	private double y;
+	private String idplaces;
+	private String origin;
+	private String destination;
+	private double distance; 
+	private int duration;
 	
-	public Places(String id, String name, 
-			double x, double y) {
-		this.id = id;
-		this.name = name;
-		this.x = x;
-		this.y = y;
+	public Places ( String origin, String destination,
+			double distance, int duration) {
+		this.origin = origin;
+		this.destination = destination;
+		this.distance = distance;
+		this.duration = duration;
 	}
-	public String getId() {
-		return id;
+	public Places (String idplaces, String origin, String destination,
+			double distance, int duration) {
+		this.idplaces = idplaces;
+		this.origin = origin;
+		this.destination = destination;
+		this.distance = distance;
+		this.duration = duration;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public String getIdplaces() {
+		return idplaces;
 	}
-	public String getName() {
-		return name;
+	public void setIdplaces(String idplaces) {
+		this.idplaces = idplaces;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public String getOrigin() {
+		return origin;
 	}
-	public double getX() {
-		return x;
+	public void setOrigin(String origin) {
+		this.origin = origin;
 	}
-	public void setX(double x) {
-		this.x = x;
+	public String getDestination() {
+		return destination;
 	}
-	public double getY() {
-		return y;
+	public void setDestination(String destination) {
+		this.destination = destination;
 	}
-	public void setY(double y) {
-		this.y = y;
+	public double getDistance() {
+		return distance;
 	}
-	public static double calculateDistance(Places a, Places b) {
-		double kc = Math.sqrt(Math.pow(b.y - a.y,2) + Math.pow(b.x - a.x, 2));
-        return (double)Math.round(kc*100)/100;
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
+	public int getDuration() {
+		return duration;
+	}
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
 }

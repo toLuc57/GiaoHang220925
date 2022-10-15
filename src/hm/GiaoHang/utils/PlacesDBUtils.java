@@ -13,16 +13,18 @@ import hm.GiaoHang.jdbc.MySQLConnUtils;
 public class PlacesDBUtils {
 	private static final String table = "places";
 	private static final String id = "idplaces";
-	private static final String name = "placesname";
-	private static final String locateX = "locate_x";
-	private static final String locateY = "locate_y";
+	private static final String origin = "origin";
+	private static final String destination = "destination";
+	private static final String distance = "distance";
+	private static final String duration = "duration";
 	
 	public static List<String> title(){
 		List<String> list = new ArrayList<String>();
 		list.add("Id");
-		list.add("Place name");
-		list.add("Locate X");
-		list.add("Locate Y");
+		list.add("Origin");
+		list.add("Destination");
+		list.add("Distance");
+		list.add("Duration");
 		return list;
 	}
 	
@@ -32,17 +34,18 @@ public class PlacesDBUtils {
 		List<Places> list = new ArrayList<Places>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select `" + id + "`, `" + name 
-					+ "`, `" + locateX + "`, `" + locateY 
+			String sql = "select `" + id + "`, `" + origin 
+					+ "`, `" + destination + "`, `" + distance + "`, `" + duration 
 					+ "` from `" + table + "`";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery();
 			while(rs.next()) {
 				String findId = rs.getString(id);
-				String findName = rs.getString(name);
-				double findX = rs.getDouble(locateX);
-				double findY = rs.getDouble(locateY);
-				Places f = new Places(findId,findName, findX, findY);
+				String findOrigin = rs.getString(origin);
+				String findDestination = rs.getString(destination);
+				double findDistance = rs.getDouble(distance);
+				int findDuration = rs.getInt(duration);
+				Places f = new Places(findId,findOrigin, findDestination, findDistance, findDuration);
 				list.add(f);
 			} 
 		}
@@ -61,8 +64,8 @@ public class PlacesDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select `" + id + "`, `" + name 
-					+ "`, `" + locateX + "`, `" + locateY 
+			String sql = "select `" + origin + "`, `" + destination 
+					+ "`, `" + distance + "`, `" + duration 
 					+ "` from `" + table 
 					+ "` where `" + id +"` =?";
 			
@@ -70,10 +73,11 @@ public class PlacesDBUtils {
 			pstm.setString(1, findId);
 			ResultSet rs = pstm.executeQuery();
 			if(rs.next()) {
-				String findName = rs.getString(name);
-				double findX = rs.getDouble(locateX);
-				double findY = rs.getDouble(locateY);
-				Places f = new Places(findId,findName, findX, findY);
+				String findOrigin = rs.getString(origin);
+				String findDestination = rs.getString(destination);
+				double findDistance = rs.getDouble(distance);
+				int findDuration = rs.getInt(duration);
+				Places f = new Places(findId,findOrigin, findDestination, findDistance, findDuration);
 				return f;
 			} 
 		}
@@ -86,25 +90,28 @@ public class PlacesDBUtils {
 		}
 		return null;
 	}
-	public static Places findName(String findName) 
+	public static List<Places> findOrigin(String findName) 
 			throws SQLException {
 		Connection conn = null;
+		List<Places> list = new ArrayList<Places>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select `" + id + "`, `" + name 
-					+ "`, `" + locateX + "`, `" + locateY 
+			String sql ="select `" + id + "`, `" + origin 
+					+ "`, `" + destination + "`, `" + distance + "`, `" + duration 
 					+ "` from `" + table 
-					+ "` where `" + name +"` LIKE ?";
+					+ "` where `" + origin +"` LIKE ?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, "%"+ findName + "%");
 			ResultSet rs = pstm.executeQuery();
-			if(rs.next()) {
+			while(rs.next()) {
 				String findId = rs.getString(id);
-				double findX = rs.getDouble(locateX);
-				double findY = rs.getDouble(locateY);
-				Places f = new Places(findId,findName, findX, findY);
-				return f;
+				String findOrigin = rs.getString(origin);
+				String findDestination = rs.getString(destination);
+				double findDistance = rs.getDouble(distance);
+				int findDuration = rs.getInt(duration);
+				Places f = new Places(findId,findOrigin, findDestination, findDistance, findDuration);
+				list.add(f);
 			} 
 		}
 		catch (ClassNotFoundException | SQLException e) {
@@ -114,22 +121,56 @@ public class PlacesDBUtils {
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
-		return null;
+		return list;
+	}
+	public static List<Places> findDestination(String findName) 
+			throws SQLException {
+		Connection conn = null;
+		List<Places> list = new ArrayList<Places>();
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql ="select `" + id + "`, `" + origin 
+					+ "`, `" + destination + "`, `" + distance + "`, `" + duration 
+					+ "` from `" + table 
+					+ "` where `" + destination +"` LIKE ?";
+			
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setString(1, "%"+ findName + "%");
+			ResultSet rs = pstm.executeQuery();
+			while(rs.next()) {
+				String findId = rs.getString(id);
+				String findOrigin = rs.getString(origin);
+				String findDestination = rs.getString(destination);
+				double findDistance = rs.getDouble(distance);
+				int findDuration = rs.getInt(duration);
+				Places f = new Places(findId,findOrigin, findDestination, findDistance, findDuration);
+				list.add(f);
+			} 
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+		return list;
 	}
 	public static void update(Places update) throws SQLException {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "update `" + table
-					+ "` set `" + name + "` =? ,`"
-					+ locateX + "`=?, `" + locateY + "`=? "
+					+ "` set `" + origin + "` =? ,`" + destination + "`=?, `" 
+					+ distance + "`=?, `" + duration + "`=? "
 					+ " where `" + id +"` =?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			pstm.setString(1, update.getName());
-			pstm.setDouble(2, update.getX());
-			pstm.setDouble(3, update.getY());
-			pstm.setString(4, update.getId());
+			pstm.setString(1, update.getOrigin());
+			pstm.setString(2, update.getDestination());
+			pstm.setDouble(3, update.getDistance());
+			pstm.setInt(4, update.getDuration());
+			pstm.setString(5, update.getIdplaces());
 			pstm.executeUpdate();
 		}
 		catch (ClassNotFoundException | SQLException e) {
@@ -146,14 +187,15 @@ public class PlacesDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "insert into " + table
-					+ " (`" + name + "`, `"+ locateX 
-					+ "`, `"+ locateY + "`) "
-					+ " value (?,?,?)";
+					+ " (`" + origin + "`, `" + destination 
+					 + "`, `" + distance + "`, `"+ duration + "`) "
+					+ " value (?,?,?,?)";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			pstm.setString(1, insert.getName());
-			pstm.setDouble(2, insert.getX());
-			pstm.setDouble(3, insert.getY());
+			pstm.setString(1, insert.getOrigin());
+			pstm.setString(2, insert.getDestination());
+			pstm.setDouble(3, insert.getDistance());
+			pstm.setInt(4, insert.getDuration());
 			pstm.executeUpdate();
 		}
 		catch (ClassNotFoundException | SQLException e) {

@@ -4,18 +4,36 @@ public class Receipt {
 	private String id;
 	private String idCustomer;
 	private String idShip;
+	private String idFee;
 	private String date;
 	private String origin;
 	private String destination;
+	private int duration;
 	private int status;
+	private int price;
 	
-	public Receipt(String id, String idCustomer, String idShip,
-			String date,String origin, String destination, int status) {
+	public Receipt(String idCustomer, String idShip, String idFee,
+			String date,String origin, String destination,
+			int duration, int status, int price) {
+		this.idCustomer = idCustomer;
+		this.idShip = idShip;
+		this.idFee = idFee;
+		this.date = date;
+		this.duration = duration;
+		this.status = status;
+		this.price = price;
+	}
+	public Receipt(String id, String idCustomer, String idShip, String idFee,
+			String date,String origin, String destination,
+			int duration, int status, int price) {
 		this.id = id;
 		this.idCustomer = idCustomer;
 		this.idShip = idShip;
+		this.idFee = idFee;
 		this.date = date;
+		this.duration = duration;
 		this.status = status;
+		this.price = price;
 	}
 	public String getId() {
 		return id;
@@ -58,5 +76,23 @@ public class Receipt {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public String getIdFee() {
+		return idFee;
+	}
+	public void setIdFee(String idFee) {
+		this.idFee = idFee;
+	}
+	public int getDuration() {
+		return duration;
+	}
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
 	}
 }

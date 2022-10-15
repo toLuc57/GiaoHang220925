@@ -41,29 +41,12 @@ public class TransportServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String from = request.getParameter("from");
-		String to = request.getParameter("to");
-		String massSTR = request.getParameter("mass");
-		
-		Places a = null;
-		Places b= null;
-		
-		double distance = 0;
-		try {
-			a = PlacesDBUtils.findName(from);
-			b = PlacesDBUtils.findName(to);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-			distance = 0;
-		}
-		double mass = 0;
-		try {
-			mass = Double.parseDouble(massSTR);
-			distance = Places.calculateDistance(a, b);
-		} catch (NullPointerException |NumberFormatException e) {
-			e.printStackTrace();
-			mass = 0;
-		}
+		int mass = Integer.parseInt(request.getParameter("mass"));
+		String origin = request.getParameter("origin");
+		String destination = request.getParameter("destination");
+		int duration = Integer.parseInt(request.getParameter("duration"));
+		double distance = Double.parseDouble(request.getParameter("distance"));
+
 //		Load table 
 		List<Fee> feeList = null;
 		try {
@@ -72,9 +55,15 @@ public class TransportServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		List<String> title = FeeDBUtils.title();
-		request.setAttribute("mass", mass);
+		
 		request.setAttribute("title", title);
 		request.setAttribute("feeList", feeList);
+		
+		request.setAttribute("mass", mass);
+		request.setAttribute("distance", distance);
+		request.setAttribute("origin", origin);
+		request.setAttribute("destination", destination);
+		request.setAttribute("duration", duration);
 		RequestDispatcher dispatcher = this.getServletContext().
 				getRequestDispatcher("/WEB-INF/view/TransportView.jsp");
 	    

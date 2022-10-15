@@ -14,10 +14,12 @@
       <a href="login">Login</a>
     </li>
   </c:if>
-  <c:if test="${not empty loginedUser}">
+  <c:if test="${not empty loginedUser.idStaff }">
     <li class="dropdown">
       <a href="receipt">Receipt</a>
     </li>
+  </c:if>
+  <c:if test="${not empty loginedUser.idCustomer }">
     <li class="dropdown">
       <a href="transport">Transport</a>
     </li>

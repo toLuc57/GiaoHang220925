@@ -1,6 +1,7 @@
 package hm.GiaoHang.entity;
 
 public class UserAccount {
+	private String id;
 	private String username;
 	private String password;
 	private String idCustomer;
@@ -15,13 +16,21 @@ public class UserAccount {
 		this.password = password;
 	}
 	
-	public UserAccount(String username, String password,
+	public UserAccount(String id, String username, String password,
 			String idCustomer, String idStaff, String status) {
 		this.username = username;
 		this.password = password;
 		this.idCustomer = idCustomer;
 		this.idStaff = idStaff;
 		this.status = status;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	public String getUsername() {
@@ -61,6 +70,4 @@ public class UserAccount {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
 }

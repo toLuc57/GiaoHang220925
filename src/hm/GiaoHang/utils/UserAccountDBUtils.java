@@ -11,6 +11,7 @@ import hm.GiaoHang.jdbc.MySQLConnUtils;
 
 public class UserAccountDBUtils {
 	private static final String table = "useraccount";
+	private static final String id = "id";
 	private static final String userName = "username";
 	private static final String password = "password";
 	private static final String idCustomer = "idCustomer";
@@ -23,7 +24,7 @@ public class UserAccountDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select `" + userName + "`, `" + password  
+			String sql = "select `" + id  + "`, `" + userName + "`, `" + password  
 					+ "`, `" + idCustomer + "`, `" + idStaff  + "`, `" + status
 					+ "` from `" + table 
 					+ "` where `" + userName +"` =? and `" + password + "`=?" ;
@@ -32,12 +33,13 @@ public class UserAccountDBUtils {
 			pstm.setString(2, findPassword);
 			ResultSet rs = pstm.executeQuery();
 			if(rs.next()) {
+				String findId = rs.getString(id);
 				String findUsername = rs.getString(userName);
 				String findpassword = rs.getString(password);
 				String findIdCustomer = rs.getString(idCustomer);
 				String findIdStaff = rs.getString(idStaff);
 				String findStatus = rs.getString(status);
-				UserAccount userAccount = new UserAccount(findUsername, 
+				UserAccount userAccount = new UserAccount(findId, findUsername, 
 						findpassword,findIdCustomer, findIdStaff, findStatus);
 				MyUtils.setTemporarySave(userAccount);
 				return true;
@@ -59,9 +61,7 @@ public class UserAccountDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select `" + password  
-					+ "`, `" + idCustomer + "`, `" + idStaff 
-					+ "` from `" + table 
+			String sql = "select 1 from `" + table 
 					+ "` where `" + userName +"` =?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);

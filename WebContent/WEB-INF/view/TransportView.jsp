@@ -4,7 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!--
+<link href="${pageContext.request.contextPath}/bootstrap-5.2.2-dist/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet" />
+-->
 <title>Receipt page!</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/mystyle.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/table.css">
@@ -13,22 +17,41 @@
 <body>
 <jsp:include page="_header.jsp"></jsp:include>
 <jsp:include page="_menu.jsp"></jsp:include>
-
 <div class="row">
     <div class="card">
       <h3>Login</h3>
       <form action="transport" method="post">
       	<p style="color:red" >${errorString}</p>
-        <label for="from">From </label>
-        <input type="text" id="from" name="from" 
-        placeholder="From" value="${from}">
-        <label for="to">To</label>
-        <input type="text" id="to" name="to" 
-        placeholder="To" value="${to}">
-        <label for="mass">Mass (gram)</label>
-        <input type="number" id="mass" name="mass" 
-        placeholder="Mass" value="${mass}" step="250">
-        <input type="submit" value="Search">
+		<div class="form-group">
+			<label>Origin: </label> 
+			<input class="form-control" id="origin" oninput="displayPlace('origin', 'from_places')"
+			placeholder="Enter a location" type="text" required/> 
+			<div id="from_places" class="card">
+			  <c:forEach items="${destinationList}" var="i">
+			  	<p onclick="getPlace('destination','${i.destination}')">${i.destination}</p>
+			  </c:forEach>
+			</div>
+			<br/>
+		</div>
+		<div class="form-group" >
+			<label>Destination: </label> 
+			<input class="form-control" id="destination" oninput="displayPlace('destination', 'to_places')"
+			placeholder="Enter a location" type="text" required/> 
+			<div id="to_places" class="card">
+			  <c:forEach items="${destinationList}" var="i">
+			  	<p onclick="getPlace('destination','${i.destination}')">${i.destination}</p>
+			  </c:forEach>
+			</div>
+		</div>
+        <div class="form-group">
+			<label>Mass: </label> 
+			<input class="form-control" id="mass" placeholder="Enter weight" type="number" required/> 
+		</div>
+        <input class="btn btn-primary" type="submit" value="Calculate" />
+        <input id="mass" name="mass" value="${mass}" type="hidden" />
+        <input id="duration" name="duration" value="${duration}" type="hidden" />
+        <input id="distance" name="distance" value="${distance}" type="hidden" />
+       
         <!-- doPost() -->
         <div>
           <table>
@@ -38,7 +61,7 @@
               </c:forEach>
             </tr>
             <c:forEach items="${feeList}" var="i">
-              <tr>
+              <tr onclick="myFunction('${feeid}', '${feeprice }')">
                 <td>${i.feeid}</td>
                 <td>${i.feename}</td>
                 <td>${i.distance}</td>
@@ -51,7 +74,33 @@
       </form>
     </div>
 </div>
-  
 <jsp:include page="_footer.jsp"></jsp:include>
+<script>
+
+	function displayPlace(value, place){
+		var x = document.getElementById(value).value;
+		const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+          // document.getElementById(place).innerHTML = this.responseText;
+        }
+        xhttp.open("POST","place");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("value= "+ value + "&place=" + x);
+
+	}
+	function getPlace(nameId, value){
+		document.getElementById(nameId).value = value;
+	}
+    function myFunction(x, y){
+    	const xhttp = new XMLHttpRequest();
+    	xhttp.onload = function() {
+          // document.getElementById("demo").innerHTML = this.responseText;
+        }
+        xhttp.open("POST","transport");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("feeid=" + x
+        		+ "feeprice=" + y);
+    }
+</script>
 </body>
 </html>
