@@ -24,18 +24,18 @@
       	<p style="color:red" >${errorString}</p>
 		<div class="form-group">
 			<label>Origin: </label> 
-			<input class="form-control" id="origin" oninput="displayPlace('origin', 'from_places')"
+			<input class="form-control" id="origin" oninput="displayPlace('origin')"
 			placeholder="Enter a location" type="text" required/> 
 			<div id="from_places" class="card">
-			  <c:forEach items="${destinationList}" var="i">
-			  	<p onclick="getPlace('destination','${i.destination}')">${i.destination}</p>
+			  <c:forEach items="${originList}" var="i">
+			  	<p onclick="getPlace('origin','${i.origin}')">${i.destination}</p>
 			  </c:forEach>
 			</div>
 			<br/>
 		</div>
 		<div class="form-group" >
 			<label>Destination: </label> 
-			<input class="form-control" id="destination" oninput="displayPlace('destination', 'to_places')"
+			<input class="form-control" id="destination" oninput="displayPlace('destination')"
 			placeholder="Enter a location" type="text" required/> 
 			<div id="to_places" class="card">
 			  <c:forEach items="${destinationList}" var="i">
@@ -77,7 +77,7 @@
 <jsp:include page="_footer.jsp"></jsp:include>
 <script>
 
-	function displayPlace(value, place){
+	function displayPlace(value){
 		var x = document.getElementById(value).value;
 		const xhttp = new XMLHttpRequest();
         xhttp.onload = function() {

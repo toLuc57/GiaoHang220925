@@ -29,19 +29,29 @@ public class PlaceServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String value = request.getParameter("value");
 		String place = request.getParameter("place");
-		List<Places> list;
-		
+		System.out.println("PlaceServlet: " + value);
+		List<Places> list = null;
 		try {
+			System.out.println("---------------------------------");
 			if(value.equals("origin")) {
 				list = PlacesDBUtils.findOrigin(place);
+				System.out.println("PlaceServlet: " + list.size());
 				request.setAttribute("originList", list);
+				for(var i : list) {
+					System.out.println(i.getOrigin());
+				}
 			}
-			else {
+			else if(value.equals("destination")){
 				list = PlacesDBUtils.findDestination(place);
+				for(var i : list) {
+					System.out.println(i.getDestination());
+				}
 				request.setAttribute("destinationList", list);
 			}
+			else {
+				System.out.println("dshkfkaslhfd");
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
