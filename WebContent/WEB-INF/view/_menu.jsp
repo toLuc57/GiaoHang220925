@@ -11,10 +11,10 @@
   %>
   <c:if test="${empty loginedUser}">
     <li class="right">
-      <a href="login">Login</a>
+      <a onclick="document.getElementById('id01').style.display='block">Login</a>
     </li>
   </c:if>
-  <c:if test="${not empty loginedUser.idStaff }">
+  <c:if test="${not empty loginedUser.idCustomer }">
     <li class="dropdown">
       <a href="receipt">Receipt</a>
     </li>

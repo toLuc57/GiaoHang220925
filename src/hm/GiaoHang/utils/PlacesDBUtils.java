@@ -90,28 +90,23 @@ public class PlacesDBUtils {
 		}
 		return null;
 	}
-	public static List<Places> findOrigin(String findName) 
+	public static List<String> findOrigin(String findName) 
 			throws SQLException {
 		Connection conn = null;
-		List<Places> list = new ArrayList<Places>();
+		List<String> list = new ArrayList<>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql ="select `" + id + "`, `" + origin 
-					+ "`, `" + destination + "`, `" + distance + "`, `" + duration 
+			String sql ="select `" + origin 
 					+ "` from `" + table 
-					+ "` where `" + origin +"` LIKE ?";
+					+ "` where `" + origin +"` LIKE ?" 
+					+ "group by `" + origin + "`";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, "%"+ findName + "%");
 			ResultSet rs = pstm.executeQuery();
 			while(rs.next()) {
-				String findId = rs.getString(id);
 				String findOrigin = rs.getString(origin);
-				String findDestination = rs.getString(destination);
-				double findDistance = rs.getDouble(distance);
-				int findDuration = rs.getInt(duration);
-				Places f = new Places(findId,findOrigin, findDestination, findDistance, findDuration);
-				list.add(f);
+				list.add(findOrigin);
 			} 
 		}
 		catch (ClassNotFoundException | SQLException e) {
@@ -123,28 +118,23 @@ public class PlacesDBUtils {
 		}
 		return list;
 	}
-	public static List<Places> findDestination(String findName) 
+	public static List<String> findDestination(String findName) 
 			throws SQLException {
 		Connection conn = null;
-		List<Places> list = new ArrayList<Places>();
+		List<String> list = new ArrayList<>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql ="select `" + id + "`, `" + origin 
-					+ "`, `" + destination + "`, `" + distance + "`, `" + duration 
+			String sql ="select `" + destination 
 					+ "` from `" + table 
-					+ "` where `" + destination +"` LIKE ?";
+					+ "` where `" + destination +"` LIKE ?" 
+					+ "group by `" + destination + "`";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, "%"+ findName + "%");
 			ResultSet rs = pstm.executeQuery();
 			while(rs.next()) {
-				String findId = rs.getString(id);
-				String findOrigin = rs.getString(origin);
 				String findDestination = rs.getString(destination);
-				double findDistance = rs.getDouble(distance);
-				int findDuration = rs.getInt(duration);
-				Places f = new Places(findId,findOrigin, findDestination, findDistance, findDuration);
-				list.add(f);
+				list.add(findDestination);
 			} 
 		}
 		catch (ClassNotFoundException | SQLException e) {
@@ -221,5 +211,38 @@ public class PlacesDBUtils {
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}	
+	}
+	public static Places calculate(String calculateOrigin, String calculateDestination) {
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql ="select `" + id + "`, `" + origin 
+					+ "`, `" + destination + "`, `" + distance + "`, `" + duration 
+					+ "` from `" + table 
+					+ "` where `" + origin + "` LIKE ?"
+					+ " AND `" + destination + "` LIKE ?";
+			
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setString(1, "%"+ calculateOrigin + "%");
+			pstm.setString(2, "%"+ calculateDestination + "%");
+			ResultSet rs = pstm.executeQuery();
+			while(rs.next()) {
+				String findId = rs.getString(id);
+				String findOrigin = rs.getString(origin);
+				String findDestination = rs.getString(destination);
+				double findDistance = rs.getDouble(distance);
+				int findDuration = rs.getInt(duration);
+				Places f = new Places(findId, findOrigin, findDestination, findDistance, findDuration);
+				return f;
+			} 
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+		return null;
 	}
 }

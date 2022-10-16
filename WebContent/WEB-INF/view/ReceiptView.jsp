@@ -31,8 +31,8 @@
               <td>${i.date}</td>
               <td>${i.origin}</td>
               <td>${i.destination}</td>
-              <td>${i.duration}</td>
-              <td>${i.status}</td>
+              <td>${i.getDurationNotice()}</td>
+              <td>${i.getStatusNotice()}</td>
               <td>${i.price}</td>
             </tr>
             <c:forEach items="${map.get(i.id)}" var="j">

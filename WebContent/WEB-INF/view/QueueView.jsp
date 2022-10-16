@@ -22,25 +22,22 @@
               <th>${i}</th>
             </c:forEach>
           </tr>
-          <c:forEach items="${newRecords}" var="i">
+          <c:forEach items="${list}" var="i">
           <input type="hidden" id="newRecords_${i.id}" name="newRecords" value="${i.id}">
             <tr>
               <td>${i.id}</td>
               <td>${i.idCustomer}</td>
               <td>${i.idShip}</td>
+              <td>${i.idFee}</td>
               <td>${i.date}</td>
               <td>${i.origin}</td>
               <td>${i.destination}</td>
-              <td>${i.status}</td>
+              <td>${i.getDurationNotice()}</td>
+              <td>${i.getStatusNotice()}</td>
+              <td>${i.price}</td>
             </tr>
           </c:forEach>
         </table>
-      </div>
-      <form action="insertReceipt" method="post">
-		<a href="transport">Cancel order</a>
-        <input type="submit" value="Confirm">
-      </form>
-    </div>
 </div>
 </body>
 </html>

@@ -27,13 +27,19 @@ public class TransportServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<String> title = FeeDBUtils.title();
 		List<Places> list = null;
+		List<String> listOrigin = null;
+		List<String> listDestination = null;
 		try {
 			list = PlacesDBUtils.query();
+			listOrigin = PlacesDBUtils.findOrigin("");
+			listDestination = PlacesDBUtils.findDestination("");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		request.setAttribute("title", title);
 		request.setAttribute("list", list);
+		request.setAttribute("listOrigin", listOrigin);
+		request.setAttribute("listDestination", listDestination);
 		
 		RequestDispatcher dispatcher = this.getServletContext().
 				getRequestDispatcher("/WEB-INF/view/TransportView.jsp");
@@ -41,16 +47,24 @@ public class TransportServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
 		int mass = Integer.parseInt(request.getParameter("mass"));
 		String origin = request.getParameter("origin");
 		String destination = request.getParameter("destination");
-		int duration = Integer.parseInt(request.getParameter("duration"));
-		double distance = Double.parseDouble(request.getParameter("distance"));
-
+		System.out.println(origin);
 //		Load table 
 		List<Fee> feeList = null;
+		List<String> listOrigin = null;
+		List<String> listDestination = null;
 		try {
-			feeList = FeeDBUtils.findRecords(distance, mass);
+			Places p = PlacesDBUtils.calculate(origin, destination);
+			listOrigin = PlacesDBUtils.findOrigin("");
+			listDestination = PlacesDBUtils.findDestination("");
+			if(p != null) {
+				request.setAttribute("placeid", p.getIdplaces());
+			}
+			feeList = FeeDBUtils.findRecords(p.getDistance(), mass);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -60,10 +74,11 @@ public class TransportServlet extends HttpServlet {
 		request.setAttribute("feeList", feeList);
 		
 		request.setAttribute("mass", mass);
-		request.setAttribute("distance", distance);
 		request.setAttribute("origin", origin);
 		request.setAttribute("destination", destination);
-		request.setAttribute("duration", duration);
+		
+		request.setAttribute("listOrigin", listOrigin);
+		request.setAttribute("listDestination", listDestination);
 		RequestDispatcher dispatcher = this.getServletContext().
 				getRequestDispatcher("/WEB-INF/view/TransportView.jsp");
 	    
