@@ -100,10 +100,11 @@ public class Receipt {
 		this.price = price;
 	}
 	public String getStatusNotice() {
-		return status == 0 ? "Not finish" : "Finished";
+		return status == 0 ? "Not finish" 
+				: (status == 1 ? "Finished" : "Error");
 	}
 	public String getDurationNotice() {
-		return (duration/60) + " hour " 
-				+ (duration%60) + " min.";
+		return (duration/60) + " min " 
+				+ (duration%60) + " second.";
 	}
 }

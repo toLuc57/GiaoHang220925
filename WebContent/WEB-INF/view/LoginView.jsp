@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/mystyle.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/form.css">
 </head>
+
 <body>
 <jsp:include page="_menu.jsp"></jsp:include>
 <div class="row">

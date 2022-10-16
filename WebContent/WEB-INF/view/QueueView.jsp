@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/table.css">
 </head>
 <body>
+<jsp:include page="_header.jsp"></jsp:include>
 <jsp:include page="_menu.jsp"></jsp:include>
 <div class="row">
     <div class="card">
@@ -21,6 +22,8 @@
             <c:forEach items="${title}" var="i">
               <th>${i}</th>
             </c:forEach>
+            <th>Receive?</th>
+            <th>Error?</th>
           </tr>
           <c:forEach items="${list}" var="i">
           <input type="hidden" id="newRecords_${i.id}" name="newRecords" value="${i.id}">
@@ -35,9 +38,13 @@
               <td>${i.getDurationNotice()}</td>
               <td>${i.getStatusNotice()}</td>
               <td>${i.price}</td>
+              <td><a href="updateOrderStatus?id=${i.id}&status=1">Received</a></td>
+              <td><a href="updateOrderStatus?id=${i.id}&status=2">Not received</a></td>
             </tr>
           </c:forEach>
         </table>
+      </div>
+    </div>
 </div>
 </body>
 </html>

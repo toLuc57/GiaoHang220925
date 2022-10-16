@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import hm.GiaoHang.entity.Customer;
 import hm.GiaoHang.entity.UserAccount;
 import hm.GiaoHang.jdbc.MySQLConnUtils;
 
@@ -19,6 +22,53 @@ public class UserAccountDBUtils {
 	private static final String status = "status";
 	private static final String noticeSuccessfull = "Login successful";
 	
+	public static List<String> query() 
+			throws SQLException {
+		Connection conn = null;
+		List<String> list = new ArrayList<>();
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "select `" + userName 
+					+ "` from `" + table + "`" ;
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			ResultSet rs = pstm.executeQuery();
+			while(rs.next()) {
+				String f = rs.getString(userName);
+				list.add(f);
+			} 
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+		return list;
+	}
+	public static boolean IsExists(String findUserName) 
+			throws SQLException {
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "select 1 from `" + table 
+					+ "` where `" + userName +"` =?" ;
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setString(1, findUserName);
+			ResultSet rs = pstm.executeQuery();
+			if(rs.next()) {
+				return true;
+			}		
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+		return false;
+	}
 	private static boolean IsExists(String findUserName, String findPassword) 
 			throws SQLException {
 		Connection conn = null;
@@ -86,5 +136,29 @@ public class UserAccountDBUtils {
 	
 	public static boolean IsSuccess(String notice) {
 		return noticeSuccessfull == "Login successful";
+	}
+	public static void insert(UserAccount insert) throws SQLException {
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "insert into " + table
+					+ " (`" + userName + "` , `" + password
+					+ "`, `"	+ idCustomer  + "`, `" + status +"`) "
+					+ " value (?,?,?,?)";
+			
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setString(1, insert.getUsername());
+			pstm.setString(2, insert.getPassword());
+			pstm.setString(3, insert.getIdCustomer());
+			pstm.setString(4, insert.getStatus());
+			pstm.executeUpdate();
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}	
 	}
 }

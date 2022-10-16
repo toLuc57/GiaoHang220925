@@ -214,7 +214,7 @@ public class ReceiptDBUtils {
 					+ date + "` = ? and`" + origin + "` = ? and `"
 					+ destination + "` = ? and `" + duration + "` = ? and `"
 					+ status + "` = ? and `" + price + "` = ?";
-			System.out.println(sql);
+			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, findRecords.getIdCustomer());
 			pstm.setString(2, findRecords.getIdShip());
