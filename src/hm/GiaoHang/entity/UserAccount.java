@@ -15,9 +15,18 @@ public class UserAccount {
 		this.username = username;
 		this.password = password;
 	}
+	public UserAccount(String username, String password,
+			String idCustomer, String idStaff, String status) {
+		this.username = username;
+		this.password = password;
+		this.idCustomer = idCustomer;
+		this.idStaff = idStaff;
+		this.status = status;
+	}
 	
 	public UserAccount(String id, String username, String password,
 			String idCustomer, String idStaff, String status) {
+		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.idCustomer = idCustomer;

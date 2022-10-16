@@ -5,15 +5,18 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import hm.GiaoHang.entity.Fee;
+import hm.GiaoHang.entity.Places;
 import hm.GiaoHang.entity.Receipt;
+import hm.GiaoHang.utils.FeeDBUtils;
 import hm.GiaoHang.utils.MyUtils;
+import hm.GiaoHang.utils.PlacesDBUtils;
 import hm.GiaoHang.utils.ReceiptDBUtils;
 
 
@@ -34,56 +37,50 @@ public class InsertReceiptServlet extends HttpServlet {
 		LocalDateTime now = LocalDateTime.now();  
 		String date = dtf.format(now);
 		String feeid = request.getParameter("feeid");
-		String origin = request.getParameter("origin");
-		String destination = request.getParameter("destination");
-		int duration;
+		String placeid = request.getParameter("placeid");
 		// Recept not ready
 		int status = 0;
-		int feeprice; 
 		
+		Receipt newRecords = null;
 		try {
-			duration = Integer.parseInt(request.getParameter("duration"));
-			feeprice = Integer.parseInt(request.getParameter("feeprice"));
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			duration = 0;
-			feeprice = 0;
-		}
-		Receipt newRecords = new Receipt(idCustomer, idShip, feeid,
-				date, origin, destination, duration, status, feeprice);
-		try {
+			Places p = PlacesDBUtils.find(placeid);
+			Fee f = FeeDBUtils.find(feeid);
+			int duration = p.getDuration();
+			if(f.getFeename().equals("Express")) {
+				duration += 5;
+			}
+			else {
+				// Normal
+				duration += 30;
+			}
+			newRecords = new Receipt(idCustomer, idShip, feeid,
+					date, p.getOrigin(), p.getDestination(), duration,
+					status, f.getFeeprice());
 			ReceiptDBUtils.insert(newRecords);
 			String newIdRecords = ReceiptDBUtils.findIdRecord(newRecords);
 			newRecords.setId(newIdRecords);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		request.setAttribute("newRecords", newRecords);
-		RequestDispatcher dispatcher = this.getServletContext().
-				getRequestDispatcher("/WEB-INF/view/QueueView.jsp");
-	    
-		dispatcher.forward(request, response);
+		response.sendRedirect(request.getContextPath() + "/quene");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("newRecords");
-		
-		try {
-			Receipt newRecords = ReceiptDBUtils.find(id);
-			// Recept ready
-			newRecords.setStatus(1);
-			ReceiptDBUtils.update(newRecords);
-			response.sendRedirect(request.getContextPath() + "/receipt");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		RequestDispatcher dispatcher = this.getServletContext().
-				getRequestDispatcher("/WEB-INF/view/TransportView.jsp");
-	    
-		dispatcher.forward(request, response);
+//		try {
+//			Receipt newRecords = ReceiptDBUtils.find(id);
+//			// Recept ready
+//			newRecords.setStatus(1);
+//			ReceiptDBUtils.update(newRecords);
+//			response.sendRedirect(request.getContextPath() + "/receipt");
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		RequestDispatcher dispatcher = this.getServletContext().
+//				getRequestDispatcher("/WEB-INF/view/TransportView.jsp");
+//	    
+//		dispatcher.forward(request, response);
 	}
 
 }

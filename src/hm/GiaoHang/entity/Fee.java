@@ -5,10 +5,10 @@ public class Fee {
 	private String feename;
 	private double distance;
 	private int mass;
-	private double feeprice;
+	private int feeprice;
 	
 	public Fee(String feeid, String feename, double distance,
-			int mass, double feeprice) {
+			int mass, int feeprice) {
 		this.feeid = feeid;
 		this.feename = feename;
 		this.distance = distance;
@@ -40,10 +40,10 @@ public class Fee {
 	public void setMass(int mass) {
 		this.mass = mass;
 	}
-	public double getFeeprice() {
+	public int getFeeprice() {
 		return feeprice;
 	}
-	public void setFeeprice(double feeprice) {
+	public void setFeeprice(int feeprice) {
 		this.feeprice = feeprice;
 	}
 }

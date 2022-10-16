@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/table.css">
 </head>
 <body>
+<jsp:include page="_header.jsp"></jsp:include>
 <jsp:include page="_menu.jsp"></jsp:include>
 <div class="row">
     <div class="card">
@@ -21,25 +22,28 @@
             <c:forEach items="${title}" var="i">
               <th>${i}</th>
             </c:forEach>
+            <th>Receive?</th>
+            <th>Error?</th>
           </tr>
-          <c:forEach items="${newRecords}" var="i">
+          <c:forEach items="${list}" var="i">
           <input type="hidden" id="newRecords_${i.id}" name="newRecords" value="${i.id}">
             <tr>
               <td>${i.id}</td>
               <td>${i.idCustomer}</td>
               <td>${i.idShip}</td>
+              <td>${i.idFee}</td>
               <td>${i.date}</td>
               <td>${i.origin}</td>
               <td>${i.destination}</td>
-              <td>${i.status}</td>
+              <td>${i.getDurationNotice()}</td>
+              <td>${i.getStatusNotice()}</td>
+              <td>${i.price}</td>
+              <td><a href="updateOrderStatus?id=${i.id}&status=1">Received</a></td>
+              <td><a href="updateOrderStatus?id=${i.id}&status=2">Not received</a></td>
             </tr>
           </c:forEach>
         </table>
       </div>
-      <form action="insertReceipt" method="post">
-		<a href="transport">Cancel order</a>
-        <input type="submit" value="Confirm">
-      </form>
     </div>
 </div>
 </body>

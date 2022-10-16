@@ -1,34 +1,48 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Home page!</title>
+<title>Info Page!</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/mystyle.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/document.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/accountform.css">
 </head>
+<style>
+.leftcolumn {   
+  float: left;
+  width: 50%;
+}
+.rightcolumn {
+  float: left;
+  width: 50%;
+  background-color: #f1f1f1;
+  padding-left: 20px;
+}
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {   
+    width: 100%;
+    padding: 0;
+  }
+}
+</style>
 <body>
 <jsp:include page="_header.jsp"></jsp:include>
 <jsp:include page="_menu.jsp"></jsp:include>
-<div class="row">
-  <div class="rightcolumn">
-    <div class="card">
-      <h2>About Me</h2>
-      <div class="fakeimg" style="height:100px;">Image</div>
-      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+
+<div class="modal">
+  <form class="modal-content" action="signup" method="post">
+    <div class="row container">
+      <div class="leftcolumn">
+        <h1>Will update avatar later</h1>
+      </div>      
+      <div class="rightcolumn">
+        <h1>Will update later</h1>
+      </div>
     </div>
-    <div class="card">
-      <h3>Popular Post</h3>
-      <div class="fakeimg"><p>Image</p></div>
-      <div class="fakeimg"><p>Image</p></div>
-      <div class="fakeimg"><p>Image</p></div>
-    </div>
-    <div class="card">
-      <h3>Follow Me</h3>
-      <p>Some text..</p>
-    </div>
-  </div>
+    
+  </form>
 </div>
 <jsp:include page="_footer.jsp"></jsp:include>
 </body>

@@ -19,6 +19,8 @@ public class Receipt {
 		this.idShip = idShip;
 		this.idFee = idFee;
 		this.date = date;
+		this.origin = origin;
+		this.destination = destination;
 		this.duration = duration;
 		this.status = status;
 		this.price = price;
@@ -31,6 +33,8 @@ public class Receipt {
 		this.idShip = idShip;
 		this.idFee = idFee;
 		this.date = date;
+		this.origin = origin;
+		this.destination = destination;
 		this.duration = duration;
 		this.status = status;
 		this.price = price;
@@ -94,5 +98,13 @@ public class Receipt {
 	}
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	public String getStatusNotice() {
+		return status == 0 ? "Not finish" 
+				: (status == 1 ? "Finished" : "Error");
+	}
+	public String getDurationNotice() {
+		return (duration/60) + " min " 
+				+ (duration%60) + " second.";
 	}
 }

@@ -44,7 +44,7 @@ public class FeeDBUtils {
 				String findName = rs.getString(name);
 				double findDistance = rs.getDouble(distance);
 				int findMass = rs.getInt(mass);
-				double findPrice = rs.getDouble(price);
+				int findPrice = rs.getInt(price);
 				Fee f = new Fee(findId,findName,findDistance,
 						findMass,findPrice);
 				list.add(f);
@@ -77,7 +77,7 @@ public class FeeDBUtils {
 				String findName = rs.getString(name);
 				double findDistance = rs.getDouble(distance);
 				int findMass = rs.getInt(mass);
-				double findPrice = rs.getDouble(price);
+				int findPrice = rs.getInt(price);
 				Fee f = new Fee(findId,findName,findDistance,
 						findMass,findPrice);
 				return f;
@@ -183,7 +183,7 @@ public class FeeDBUtils {
 				String findName = rs.getString(name);
 				double findDistance = rs.getDouble(distance);
 				int findMass = rs.getInt(mass);
-				double findPrice = rs.getDouble(price);
+				int findPrice = rs.getInt(price);
 				Fee f = new Fee(findId,findName,findDistance,
 						findMass,findPrice);
 				list.add(f);

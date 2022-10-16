@@ -46,7 +46,7 @@ public class ReceiptDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select `" + id + "`, `" + idCustomer 
 					+ "`, `" + idShip + "`, `" + idFee + "`, `" + date 
-					+ "`, `" + origin + "`, `" + destination  
+					+ "`, `" + origin + "`, `" + destination  + "`, `" + duration
 					+ "`, `" + status + "`, `" + price
 					+ "` from `" + table +"`";
 			System.out.println(sql);
@@ -89,7 +89,8 @@ public class ReceiptDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select `" + id + "`, `" + idShip 
 					+ "`, `" + idFee + "`, `" + date + "`, `" + origin 
-					+ "`, `" + destination + "`, `" + status + "`, `" + status
+					+ "`, `" + destination  + "`, `" + duration
+					+ "`, `" + status + "`, `" + price
 					+ "` from `" + table 
 					+ "` where `" + idCustomer + "` =?";
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -119,15 +120,58 @@ public class ReceiptDBUtils {
 		}
 		return list;
 	}
-	
+	public static List<Receipt> query(String findIdCustomer, int findStatus) 
+			throws SQLException {
+		if(findIdCustomer == null || findIdCustomer.length() == 0) {
+			return query();
+		}
+		Connection conn = null;
+		List<Receipt> list = new ArrayList<Receipt>();
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "select `" + id + "`, `" + idShip 
+					+ "`, `" + idFee + "`, `" + date + "`, `" + origin 
+					+ "`, `" + destination  + "`, `" + duration
+					+ "`, `" + status + "`, `" + price
+					+ "` from `" + table 
+					+ "` where `" + idCustomer + "` =?"
+					+ " and `" + status + "` =?";
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			pstm.setString(1, findIdCustomer);
+			pstm.setInt(2, findStatus);
+			ResultSet rs = pstm.executeQuery();
+			while(rs.next()) {
+				String findId = rs.getString(id);
+				String findIdShip = rs.getString(idShip);
+				String findIdFee = rs.getString(idFee);
+				String findDate = rs.getString(date);
+				String findOrigin = rs.getString(origin);
+				String findDestination = rs.getString(destination);
+				int findDuration = rs.getInt(duration);
+				int findPrice = rs.getInt(price);
+				Receipt f = new Receipt(findId,findIdCustomer,findIdShip,findIdFee,
+						findDate,findOrigin,findDestination,findDuration,findStatus,findPrice);
+				list.add(f);
+			} 
+		}
+		catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+		return list;
+	}
 	public static Receipt find(String findId) 
 			throws SQLException {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select `" + idCustomer + "`, `" + idShip
+			String sql = "select `" + idCustomer + "`, `" + idShip 
 					+ "`, `" + idFee + "`, `" + date + "`, `" + origin 
-					+ "`, `" + destination + "`, `" + status
+					+ "`, `" + destination  + "`, `" + duration
+					+ "`, `" + status + "`, `" + price
 					+ "` from `" + table
 					+ "` where `" + id + "` = ?";
 			
@@ -163,12 +207,13 @@ public class ReceiptDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select `" + id + "` from `" + table
-					+ "` where `" + idCustomer + "` = ?,`" 
-					+ idShip + "` = ?,`" + idFee + "` = ?,`"
-					+ date + "` = ?,`" + origin + "` = ?,`"
-					+ destination + "` = ?,`" + duration + "` = ?,`"
-					+ status + "` = ?,`" + price + "` = ?";
+			String sql = "select `" + id 
+					+ "` from `" + table
+					+ "` where `" + idCustomer + "` = ? and `" 
+					+ idShip + "` = ? and `" + idFee + "` = ? and `"
+					+ date + "` = ? and`" + origin + "` = ? and `"
+					+ destination + "` = ? and `" + duration + "` = ? and `"
+					+ status + "` = ? and `" + price + "` = ?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			pstm.setString(1, findRecords.getIdCustomer());
@@ -200,8 +245,8 @@ public class ReceiptDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "update `" + table
 					+ "` set `" + idCustomer + "` =?, `"
-					+ idShip + "` =?, `" + date + "` =?, `"
-					+ idFee + "` =?, `" + origin + "`=?, `" 
+					+ idShip + "` =?, `" + idFee + "` =?, `"
+					+ date + "` =?, `" + origin + "`=?, `" 
 					+ destination + "`=?, `" + duration + "`=?, `"
 					+ status + "`=?, `" + price +"`=? "
 					+ " where `" + id +"` =?";
