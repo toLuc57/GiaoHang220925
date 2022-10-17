@@ -9,7 +9,7 @@
 <!--
 <link href="${pageContext.request.contextPath}/bootstrap-5.2.2-dist/css/bootstrap.min.css" id="bootstrap-css" rel="stylesheet" />
 -->
-<title>Receipt page!</title>
+<title>Transport page!</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/mystyle.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/table.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/form.css">
@@ -19,7 +19,7 @@
 <jsp:include page="_menu.jsp"></jsp:include>
 <div class="row">
     <div class="card">
-      <h3>Login</h3>
+      <h3>Transport</h3>
       <form action="transport" method="post">
       	<p style="color:red" >${errorString}</p>
 		<div class="form-group">

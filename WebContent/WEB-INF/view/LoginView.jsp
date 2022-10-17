@@ -10,6 +10,7 @@
 </head>
 
 <body>
+<jsp:include page="_header.jsp"></jsp:include>
 <jsp:include page="_menu.jsp"></jsp:include>
 <div class="row">
   <div class="leftcolumn">
